@@ -6,6 +6,8 @@
     <title>Home | PoluxSuperShark</title>
 </head>
 <body>
+
+    <?php include "./config/database.php"; ?>
     
 </body>
 </html>
