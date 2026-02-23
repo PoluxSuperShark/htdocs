@@ -1,4 +1,4 @@
-<br></br><br>
+<br>
 
 <h1>A propos de nous</h1>
 <p>PoluxSuperShark est un projet Minecraft d'une ville avec des trains moddée. C'est un projet qui a eu ses débuts en 2017
