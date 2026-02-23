@@ -1,4 +1,5 @@
 <?php
+// Detects the OS (Windows, Mac, Linux)
 function detectOS($userAgent) {
     if (stripos($userAgent, 'Windows') !== false) {
         return 'windows';
@@ -22,13 +23,13 @@ $os = detectOS($_SERVER['HTTP_USER_AGENT']);
     $downloadLink = "#";
     $downloadText = "Télécharger";
 
-    if ($os === 'windows') {
+    if ($os === 'windows') {                                    // Windows
         $downloadLink = "downloads/launcher_setup.exe";
         $downloadText = "Télécharger pour Windows";
-    } elseif ($os === 'mac') {
+    } elseif ($os === 'mac') {                                  // Mac
         $downloadLink = "downloads/launcher_mac.dmg";
         $downloadText = "Télécharger pour macOS";
-    } elseif ($os === 'linux') {
+    } elseif ($os === 'linux') {                                // Linux
         $downloadLink = "downloads/launcher_linux.AppImage";
         $downloadText = "Télécharger pour Linux";
     }
@@ -50,7 +51,7 @@ $os = detectOS($_SERVER['HTTP_USER_AGENT']);
 </div>
 
 <script>
-    // Ajustement côté navigateur (plus fiable)
+    // More viable by client side
     const platform = navigator.platform.toLowerCase();
     const btn = document.getElementById("mainDownloadBtn");
 
