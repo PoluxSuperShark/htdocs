@@ -1,14 +1,14 @@
 <?php
 session_start();
 
-require '../../config/database.php';
+require '../config/database.php';
 
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Mon compte</title>
+    <title>Télécharger le launcher pour Windows, macOS et Linux</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../css/settings.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -41,16 +41,13 @@ require '../../config/database.php';
     
     <div class="container mt-5">
     
-    <?php include "../../components/navbar.php"; ?>
+        <?php include "../components/navbar.php"; ?>
 
-    <br>
+        <br>
 
-    <h2 class="mb-4">
-        
-    </h2>
+        <?php include "../src/downloads.php" ?>
 
-
-</div>
+    </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
