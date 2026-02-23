@@ -39,7 +39,7 @@ if (!$user) {
         }
 
         .nav-pills .nav-link {
-            text-align: left; /* Texte aligné à gauche */
+            text-align: left;
             font-weight: 500;
             margin-bottom: 8px;
         }
@@ -60,7 +60,7 @@ if (!$user) {
 
     <div class="row">
 
-        <!-- SIDEBAR FIXE -->
+        <!-- FIXED SIDEBAR -->
         <aside class="col-md-3">
             <div class="sidebar bg-white p-3 rounded-3 shadow-sm">
                 <div class="nav flex-column nav-pills" role="tablist">
@@ -111,7 +111,7 @@ if (!$user) {
             </div>
         </aside>
 
-        <!-- CONTENU -->
+        <!-- CONTENT -->
         <div class="col-md-9">
             <div class="tab-content">
 

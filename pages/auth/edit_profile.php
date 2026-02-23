@@ -9,18 +9,19 @@ require '../../config/database.php';
 
 $message = '';
 
-// Récupérer les infos actuelles
+// Get current infos
 $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
 $stmt->execute([':id' => $_SESSION['user_id']]);
 $user = $stmt->fetch();
 
+// If not user
 if (!$user) {
     session_destroy();
     header("Location: index.php");
     exit;
 }
 
-// Mise à jour si formulaire soumis
+// Update
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $first_name = $_POST['first_name'] ?? '';
     $last_name = $_POST['last_name'] ?? '';
@@ -30,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $age = $_POST['age'] ?? null;
     $gender = $_POST['gender'] ?? 'other';
 
-    // Vérifier que l'email n'est pas déjà utilisé par un autre
+    // Verify if email is not used by another one
     $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE email = :email AND id != :id");
     $stmt->execute([':email' => $email, ':id' => $_SESSION['user_id']]);
     if ($stmt->fetchColumn() > 0) {
@@ -49,9 +50,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':id' => $_SESSION['user_id']
         ]);
         $message = "Profil mis à jour avec succès !";
-        // Mettre à jour la session si username change (optionnel)
+        // Update if username changes
         $_SESSION['username'] = $user['username'];
-        // Recharger les données
+        // Reload datas
         $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
         $stmt->execute([':id' => $_SESSION['user_id']]);
         $user = $stmt->fetch();
