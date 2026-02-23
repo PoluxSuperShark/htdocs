@@ -1,0 +1,20 @@
+/* Titles */
+h1, h2, h3, h4, h5, h6 {
+    margin-left: 2rem;
+}
+
+h1 {
+    text-decoration: underline;
+}
+
+/* Paragraphs */
+p {
+    margin-left: 2rem;
+}
+
+/* Hyperlinks */
+a {
+    text-decoration: none;
+    color: black;
+    cursor: crosshair;
+}

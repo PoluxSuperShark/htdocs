@@ -1,0 +1,27 @@
+body {
+  background-color: #cecece;
+}
+
+main {
+  margin-top: 1rem;
+  margin-left: 2rem;
+  margin-right: 2rem;
+  padding: 1rem;
+  background-color: white;
+}
+
+main b {
+  color: blue;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 2fr);
+  gap: 10px;
+}
+
+.grid div {
+  background: #ddd;
+  padding: 20px;
+  text-align: center;
+}

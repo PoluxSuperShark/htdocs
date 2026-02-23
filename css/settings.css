@@ -1,0 +1,11 @@
+@import "./components/navbar.css";
+@import "./components/footer.css";
+
+main p {
+    text-align: justify;
+}
+
+/* Pseudos */
+code {
+    color: red;
+}
