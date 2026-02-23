@@ -6,15 +6,16 @@ $message = '';
 
 // Get and put datas in database
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'] ?? '';       // Username
-    $email = $_POST['email'] ?? '';             // Email
-    $password = $_POST['password'] ?? '';       // Password
+
+    $username   = $_POST['username'] ?? '';     // Username
+    $email      = $_POST['email'] ?? '';        // Email
+    $password   = $_POST['password'] ?? '';     // Password
     $first_name = $_POST['first_name'] ?? '';   // First name
-    $last_name = $_POST['last_name'] ?? '';     // Last name
-    $address = $_POST['address'] ?? null;       // Adress
-    $phone = $_POST['phone'] ?? null;           // Phone
-    $age = $_POST['age'] ?? null;               // Age
-    $gender = $_POST['gender'] ?? 'other';      // Gender
+    $last_name  = $_POST['last_name'] ?? '';    // Last name
+    $address    = $_POST['address'] ?? null;    // Adress
+    $phone      = $_POST['phone'] ?? null;      // Phone
+    $age        = $_POST['age'] ?? null;        // Age
+    $gender     = $_POST['gender'] ?? 'other';  // Gender
 
     // Verify if email or username is already used
     $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE email = :email OR username = :username");
