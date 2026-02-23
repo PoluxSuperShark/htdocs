@@ -7,6 +7,7 @@ $message = '';
 // Get and put datas in database
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+    // Infos
     $username   = $_POST['username'] ?? '';     // Username
     $email      = $_POST['email'] ?? '';        // Email
     $password   = $_POST['password'] ?? '';     // Password
@@ -20,16 +21,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Verify if email or username is already used
     $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE email = :email OR username = :username");
     $stmt->execute([':email' => $email, ':username' => $username]);
+
     if ($stmt->fetchColumn() > 0) {
+        
         $message = 'Email ou nom d\'utilisateur déjà utilisé.'; // Error
+    
     } else {
+        
         // Password verify
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        
         $sql = "INSERT INTO users 
             (username, email, password, first_name, last_name, address, phone, age, gender) 
             VALUES 
             (:username, :email, :password, :first_name, :last_name, :address, :phone, :age, :gender)";
+        
         $stmt = $pdo->prepare($sql);
+
         $stmt->execute([
             ':username' => $username,           // Username
             ':email' => $email,                 // Email
@@ -41,7 +49,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ':age' => $age,                     // Age
             ':gender' => $gender                // Gender
         ]);
+
         $message = 'Inscription réussie ! Vous pouvez maintenant vous connecter.'; // Success
+
     }
 }
 
