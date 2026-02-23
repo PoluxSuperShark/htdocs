@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inscription / Connexion</title>
+    <title>Authentification</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
@@ -12,7 +12,7 @@
     <div class="row">
         <!-- Inscription -->
         <div class="col-md-6">
-            <h3>Inscription</h3>
+            <h3>S'inscrire</h3>
             <form action="register.php" method="POST">
                 <div class="mb-3">
                     <label>Nom d'utilisateur</label>
@@ -60,7 +60,7 @@
 
         <!-- Connexion -->
         <div class="col-md-6">
-            <h3>Connexion</h3>
+            <h3>Se connecter</h3>
             <form action="login.php" method="POST">
                 <div class="mb-3">
                     <label>Email</label>
