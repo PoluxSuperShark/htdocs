@@ -29,9 +29,13 @@ if (!$user) {
     <meta charset="UTF-8">
     <title>Mon compte</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+    <link rel="stylesheet" href="../../css/settings.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <style>
+        nav {
+            width: 200%;
+        }
+    </style>
     <style>
         .sidebar {
             position: sticky;
@@ -53,7 +57,13 @@ if (!$user) {
 
 <body class="bg-light">
 
-<div class="container mt-5">
+    
+    <div class="container mt-5">
+    
+    <?php include "../../components/navbar.php"; ?>
+
+    <br>
+
     <h2 class="mb-4">
         Bienvenue <?= htmlspecialchars($user['username']) ?> 👋 !
     </h2>
