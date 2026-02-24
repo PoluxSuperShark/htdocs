@@ -111,5 +111,52 @@ if (isset($_GET['fetch'])) {
 
 <script src="../js/chat.js"></script>
 
+<?php
+// Webhook
+$webhookUrl = "";
+
+// Récupère infos utilisateur
+$stmtUser = $pdo->prepare("SELECT username, role FROM users WHERE id = :id");
+$stmtUser->execute([':id' => $_SESSION['user_id']]);
+$userData = $stmtUser->fetch(PDO::FETCH_ASSOC);
+
+$color = ($userData['role'] === 'admin') ? 16711680 : 3447003; 
+// Rouge si admin, bleu sinon
+
+$data = [
+    "embeds" => [[
+        "title" => "Message envoyé depuis le chat",
+        "color" => $color,
+        "fields" => [
+            [
+                "name" => "Utilisateur",
+                "value" => $userData['username'],
+                "inline" => true
+            ],
+            [
+                "name" => "Rôle",
+                "value" => $userData['role'],
+                "inline" => true
+            ],
+            [
+                "name" => "Message",
+                "value" => $message
+            ]
+        ],
+        "timestamp" => date("c")
+    ]]
+];
+
+$ch = curl_init($webhookUrl);
+curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_TIMEOUT, 2); // No block
+
+curl_exec($ch);
+curl_close($ch);
+?>
+
 </body>
 </html>
