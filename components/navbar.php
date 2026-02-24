@@ -1,13 +1,25 @@
+<?php
+// Get the current protocol
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'
+             || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
+// Get hostname
+$host = $_SERVER['HTTP_HOST'];
+// e.g: https://poluxsupershark.net/
+$base_url = $protocol . $host;
+
+// echo $base_url;
+
+?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">PoluxSuperShark</a>
+    <a class="navbar-brand" href="<?php echo $base_url . "/index.php"; ?>">PoluxSuperShark</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarComplexe" aria-controls="navbarComplexe" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarComplexe">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item"><a class="nav-link active" href="../index.php">Accueil</a></li>
+        <li class="nav-item"><a class="nav-link active" href="<?php echo $base_url . "/index.php"; ?>">Accueil</a></li>
 
         <!-- Menu déroulant classique -->
         <li class="nav-item dropdown">

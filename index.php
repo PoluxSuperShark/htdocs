@@ -15,7 +15,7 @@ require './config/database.php';
     <!-- SEO -->
     <meta name="description" content="Accueil du site de PoluxSuperShark">
     <meta name="keywords" content="PoluxSuperShark, PoluxSuperShark.net">
-    
+
 </head>
 
 <body class="bg-light">
@@ -24,13 +24,9 @@ require './config/database.php';
     <div class="container mt-5">
     
         <?php include "./components/navbar.php"; ?>
-
         <br>
-
         <?php include "./src/index.php"; ?>
-
         <br>
-
         <?php include "./components/footer.php"; ?>
 
     </div>
