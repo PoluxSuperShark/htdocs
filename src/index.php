@@ -7,7 +7,7 @@
   <div class="container">
     <h1 class="display-4 fw-bold">Bienvenue sur PoluxSuperShark</h1>
     <p class="lead mb-4">Une ville virtuelle, une communauté réelle</p>
-    <a href="#" class="btn btn-primary btn-lg">Découvrir le bot</a>
+    <a href="#" class="btn btn-primary btn-lg">Découvrir le serveur</a>
   </div>
 </section>
 
