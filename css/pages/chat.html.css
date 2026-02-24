@@ -1,0 +1,21 @@
+#chatBox {
+    height: 400px;
+    overflow-y: auto;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+.message {
+    margin-bottom: 8px;
+}
+
+.username-admin {
+    color: red;
+    font-weight: bold;
+}
+
+.username-user {
+    color: black;
+}

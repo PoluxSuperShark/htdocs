@@ -111,44 +111,28 @@ if (isset($_GET['fetch'])) {
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="../css/settings.css">
+<link rel="stylesheet" href="../css/pages/chat.html.css">
 
-<style>
-#chatBox {
-    height: 400px;
-    overflow-y: auto;
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-}
-
-.message {
-    margin-bottom: 8px;
-}
-
-.username-admin {
-    color: red;
-    font-weight: bold;
-}
-
-.username-user {
-    color: black;
-}
-</style>
 </head>
 <body class="bg-light">
 
-<div class="container mt-5">
+    <div class="container mt-5">
 
-    <h1 class="mb-3">Chat entre les membres connectés</h1>
-    <hr>
+        <br>
 
-    <div id="chatBox" class="mb-3"></div>
+        <h1 class="mb-3">Chat entre les membres connectés</h1>
+        <hr>
 
-    <div class="input-group">
-        <input type="text" id="messageInput" class="form-control" placeholder="Écrivez votre message...">
-        <button class="btn btn-primary" onclick="sendMessage()">Envoyer le message</button>
+        <div id="chatBox" class="mb-3"></div>
+
+        <div class="input-group">
+            <input type="text" id="messageInput" class="form-control" placeholder="Écrivez votre message...">
+            <button class="btn btn-primary" onclick="sendMessage()">Envoyer le message</button>
+        </div>
+
     </div>
+
+    
 
 </div>
 
