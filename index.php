@@ -5,35 +5,17 @@ require './config/database.php';
 
 ?>
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" dir="ltr">
 <head>
     <meta charset="UTF-8">
-    <title>Mon compte</title>
+    <title>Accueil | PoluxSuperShark, une ville virtuelle, une communauté réelle</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../../css/settings.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        nav {
-            width: 200%;
-        }
-    </style>
-    <style>
-        .sidebar {
-            position: sticky;
-            top: 20px;
-        }
-
-        .nav-pills .nav-link {
-            text-align: left;
-            font-weight: 500;
-            margin-bottom: 8px;
-        }
-
-        .nav-pills .nav-link.active {
-            background-color: #0d6efd;
-            color: white;
-        }
-    </style>
+    <!-- SEO -->
+    <meta name="description" content="Accueil du site de PoluxSuperShark">
+    <meta name="keywords" content="PoluxSuperShark, PoluxSuperShark.net">
+    
 </head>
 
 <body class="bg-light">
@@ -46,6 +28,10 @@ require './config/database.php';
         <br>
 
         <?php include "./src/index.php"; ?>
+
+        <br>
+
+        <?php include "./components/footer.php"; ?>
 
     </div>
 
