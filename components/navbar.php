@@ -48,7 +48,7 @@
 
       <!-- Formulaire ou bouton à droite -->
       <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Taper ici pour rechercher">
+        <input class="form-control me-1" type="search" placeholder="Taper ici pour rechercher">
         <button class="btn btn-outline-success" type="submit">Rechercher</button>
       </form>
     </div>
