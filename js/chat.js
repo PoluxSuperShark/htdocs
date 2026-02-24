@@ -1,68 +1,76 @@
-// Chatbox
-const chatBox = document.getElementById("chatBox");
-const input = document.getElementById("messageInput");
+let currentUserId = <?= json_encode($_SESSION['user_id']) ?>;
+let currentUserRole = <?= json_encode($currentUserRole) ?>;
 
-// JS : Fetch msg
 function fetchMessages() {
     fetch("chat.php?fetch=1")
-        .then(response => response.json())
-        .then(data => {
+    .then(res => res.json())
+    .then(data => {
+        let chatBox = document.getElementById("chatBox");
+        chatBox.innerHTML = "";
 
-            chatBox.innerHTML = "";
+        data.forEach(msg => {
+            let div = document.createElement("div");
+            div.classList.add("message");
+            let roleClass = (msg.role === "admin") ? "username-admin" : "username-user";
+            div.innerHTML = `<span class="${roleClass}">${msg.username}</span>: ${msg.message}`;
 
-            data.forEach(msg => {
+            // Supprimer message
+            if (msg.user_id === currentUserId || currentUserRole === "admin") {
+                let btn = document.createElement("span");
+                btn.className = "delete-btn";
+                btn.textContent = "✖";
+                btn.onclick = () => deleteMessage(msg.id);
+                div.appendChild(btn);
+            }
 
-                const div = document.createElement("div");
-                div.classList.add("message");
+            // Bannir utilisateur (admins seulement)
+            if (currentUserRole === "admin" && msg.user_id !== currentUserId) {
+                let btnBan = document.createElement("span");
+                btnBan.className = "ban-btn";
+                btnBan.textContent = "🚫";
+                btnBan.onclick = () => banUser(msg.user_id);
+                div.appendChild(btnBan);
+            }
 
-                const usernameClass = (msg.role === "admin")
-                    ? "username-admin"
-                    : "username-user";
-
-                div.innerHTML =
-                    `<span class="${usernameClass}">
-                        ${escapeHtml(msg.username)}
-                    </span> :
-                    ${escapeHtml(msg.message)}`;
-
-                chatBox.appendChild(div);
-            });
-
-            chatBox.scrollTop = chatBox.scrollHeight;
+            chatBox.appendChild(div);
         });
+
+        chatBox.scrollTop = chatBox.scrollHeight;
+    });
 }
 
-// Send msg
 function sendMessage() {
-
-    const message = input.value.trim();
-    if (message === "") return;
+    let input = document.getElementById("messageInput");
+    let message = input.value.trim();
+    if (!message) return;
 
     fetch("chat.php", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: "message=" + encodeURIComponent(message)
-    })
-    .then(() => {
-        input.value = "";
-        fetchMessages();
-    });
+    }).then(()=> { input.value=""; fetchMessages(); });
 }
 
-// Block the XSS
-function escapeHtml(text) {
-    const div = document.createElement("div");
-    div.innerText = text;
-    return div.innerHTML;
+function deleteMessage(id) {
+    fetch("chat.php", {
+        method:"POST",
+        headers: {"Content-Type":"application/x-www-form-urlencoded"},
+        body:"delete_id=" + encodeURIComponent(id)
+    }).then(()=>fetchMessages());
 }
 
-// Events
-input.addEventListener("keypress", function(e) {
-    if (e.key === "Enter") {
-        sendMessage();
-    }
-});
+function banUser(userId) {
+    if (!confirm("Voulez-vous vraiment bannir cet utilisateur ?")) return;
+    fetch("chat.php", {
+        method:"POST",
+        headers: {"Content-Type":"application/x-www-form-urlencoded"},
+        body:"ban_user_id=" + encodeURIComponent(userId)
+    }).then(()=>fetchMessages());
+}
 
-/* Refresh toutes les 2 sec */
-setInterval(fetchMessages, 2000);
+setInterval(fetchMessages,2000);
 fetchMessages();
+
+document.getElementById("messageInput").addEventListener("keypress", e=>{
+    if(e.key==="Enter") sendMessage();
+});

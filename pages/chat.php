@@ -1,102 +1,80 @@
 <?php
 session_start();
-
-// DB
 require __DIR__ . '/../config/database.php';
 
 if (!isset($_SESSION['user_id'])) {
     die("Non autorisé");
 }
 
+// Récupère rôle et statut banné
+$stmtUser = $pdo->prepare("SELECT role, banned FROM users WHERE id = :id");
+$stmtUser->execute([':id' => $_SESSION['user_id']]);
+$currentUser = $stmtUser->fetch(PDO::FETCH_ASSOC);
+$currentUserRole = $currentUser['role'] ?? 'user';
+$isBanned = $currentUser['banned'] ?? 0;
+
 /* ======================================
    API - SEND MESSAGE
 ====================================== */
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['message'])) {
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-    $message = trim($_POST['message']);
-
-    if ($message !== '') {
-
-        // Récupère infos utilisateur
-        $stmtUser = $pdo->prepare("SELECT username, role FROM users WHERE id = :id");
-        $stmtUser->execute([':id' => $_SESSION['user_id']]);
-        $userData = $stmtUser->fetch(PDO::FETCH_ASSOC);
-
-        if ($userData) {
-
-            // Insert message en base
-            $stmtInsert = $pdo->prepare("
-                INSERT INTO messages (user_id, message)
-                VALUES (:user_id, :message)
-            ");
-
+    // ENVOI MESSAGE
+    if (isset($_POST['message'])) {
+        $message = trim($_POST['message']);
+        if ($message !== '' && !$isBanned) {
+            $stmtInsert = $pdo->prepare("INSERT INTO messages (user_id, message) VALUES (:user_id, :message)");
             $stmtInsert->execute([
                 ':user_id' => $_SESSION['user_id'],
                 ':message' => $message
             ]);
-
-            /* ======================================
-               DISCORD WEBHOOK
-            ====================================== */
-
-            // ⚠️ Mets ton webhook dans un fichier config idéalement
-            $webhookUrl = "";
-
-            $color = ($userData['role'] === 'admin') ? 16711680 : 3447003;
-
-            $payload = [
-                "embeds" => [[
-                    "title" => "Message envoyé depuis le chat",
-                    "color" => $color,
-                    "fields" => [
-                        [
-                            "name" => "Utilisateur",
-                            "value" => $userData['username'],
-                            "inline" => true
-                        ],
-                        [
-                            "name" => "Rôle",
-                            "value" => $userData['role'],
-                            "inline" => true
-                        ],
-                        [
-                            "name" => "Message",
-                            "value" => $message
-                        ]
-                    ],
-                    "timestamp" => date("c")
-                ]]
-            ];
-
-            $ch = curl_init($webhookUrl);
-            curl_setopt($ch, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
-            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($ch, CURLOPT_TIMEOUT, 2);
-            curl_exec($ch);
-            curl_close($ch);
         }
+        exit;
     }
 
-    exit;
+    // SUPPRIMER MESSAGE
+    if (isset($_POST['delete_id'])) {
+        $msgId = (int)$_POST['delete_id'];
+
+        if ($currentUserRole === 'admin') {
+            // Admin supprime n'importe quel message
+            $stmt = $pdo->prepare("DELETE FROM messages WHERE id = :id");
+            $stmt->execute([':id' => $msgId]);
+        } else {
+            // Utilisateur supprime seulement ses propres messages
+            $stmt = $pdo->prepare("DELETE FROM messages WHERE id = :id AND user_id = :uid");
+            $stmt->execute([':id' => $msgId, ':uid' => $_SESSION['user_id']]);
+        }
+        exit;
+    }
+
+    // BANNIR UTILISATEUR
+    if (isset($_POST['ban_user_id']) && $currentUserRole === 'admin') {
+        $banUserId = (int)$_POST['ban_user_id'];
+
+        // Bannir et supprimer ses messages
+        $stmt = $pdo->prepare("UPDATE users SET banned = 1 WHERE id = :id");
+        $stmt->execute([':id' => $banUserId]);
+
+        $stmt = $pdo->prepare("DELETE FROM messages WHERE user_id = :uid");
+        $stmt->execute([':uid' => $banUserId]);
+
+        exit;
+    }
 }
 
 /* ======================================
    API - FETCH MESSAGES
 ====================================== */
 if (isset($_GET['fetch'])) {
-
     header('Content-Type: application/json');
 
     $stmt = $pdo->prepare("
-        SELECT m.message, m.created_at, u.username, u.role
+        SELECT m.id, m.message, m.created_at, u.username, u.role, m.user_id
         FROM messages m
         JOIN users u ON m.user_id = u.id
         ORDER BY m.created_at ASC
         LIMIT 100
     ");
-
     $stmt->execute();
     echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
     exit;
@@ -107,34 +85,57 @@ if (isset($_GET['fetch'])) {
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Chat entre les membres connectés | PoluxSuperShark</title>
-
+<title>Chat | PoluxSuperShark</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="../css/settings.css">
-<link rel="stylesheet" href="../css/pages/chat.html.css">
-
+<style>
+#chatBox { height:400px; overflow-y:auto; background:#f8f9fa; padding:15px; border-radius:10px; border:1px solid #ddd; }
+.message { margin-bottom:8px; position:relative; }
+.username-admin { color:red; font-weight:bold; }
+.username-user { color:black; }
+.delete-btn, .ban-btn { position:absolute; right:0; top:0; cursor:pointer; font-size:0.8rem; color:#888; margin-left:5px; }
+.delete-btn:hover { color:red; }
+.ban-btn:hover { color:orange; }
+</style>
 </head>
 <body class="bg-light">
+<div class="container mt-5">
 
-    <div class="container mt-5">
+    <?php include "../components/navbar.php"; ?>
 
-        <br>
+    <h1 class="mb-3">Chat entre les membres</h1>
 
-        <h1 class="mb-3">Chat entre les membres connectés</h1>
-        <hr>
+    <p>En cas de non-respect des règles, vous pouvez être banni du chat. Veuillez ne pas faire n'importe quoi comme :</p>
+    <ul>
+        <li>Doxxing, harcèlement, menaces</li>
+        <li>Spam, pubs et auto-promotions</li>
+        <li>Discuter de politique, religion ou moeurs sensibles</li>
+        <li>Dire des gros mots, insultes, ou langage innaproprié</li>
+        <li>Discuter sur le sexe en particulier le langage cru également</li>
+    </ul>
 
-        <div id="chatBox" class="mb-3"></div>
+    <hr>
 
-        <div class="input-group">
-            <input type="text" id="messageInput" class="form-control" placeholder="Écrivez votre message...">
-            <button class="btn btn-primary" onclick="sendMessage()">Envoyer le message</button>
-        </div>
+    <?php if($isBanned): ?>
+    <p class="text-danger">Vous êtes banni et ne pouvez plus poster de messages.</p>
+    <?php endif; ?>
 
+    <div id="chatBox" class="mb-3"></div>
+    <div class="input-group">
+        <input type="text" id="messageInput" class="form-control" placeholder="Écrivez votre message..." <?= $isBanned ? 'disabled' : '' ?>>
+        <button class="btn btn-primary" onclick="sendMessage()" <?= $isBanned ? 'disabled' : '' ?>>Envoyer le message</button>
     </div>
 
+    <br>
+
+    <p>Réfléchissez à deux fois avant d'envoyer ce message</p>
+
+    <?php include "../components/footer.php"; ?>
     
 
 </div>
+
+<br>
+
 
 <script src="../js/chat.js"></script>
 
