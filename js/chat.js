@@ -1,3 +1,4 @@
+// TODO : Don't care about errs in the two vars
 let currentUserId = <?= json_encode($_SESSION['user_id']) ?>;
 let currentUserRole = <?= json_encode($currentUserRole) ?>;
 
