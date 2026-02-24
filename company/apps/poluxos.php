@@ -64,7 +64,7 @@ body{margin:0;background:url('https://wallpapercave.com/dwp1x/wp5493583.jpg') no
         <div class="start" id="startBtn">⊞</div>
         <form class="search" id="searchForm"><input id="searchInput" placeholder="Taper ici pour rechercher"></form>
         <div class="task-icon" id="cortanaBtn"><div class="cortana"></div></div>
-        <div class="task-icon" id="taskViewBtn">▢▢</div>
+        <div class="task-icon" id="taskViewBtn">▢</div>
     </div>
     <div class="task-right">
         ^ 🔊 📶 🔋 
