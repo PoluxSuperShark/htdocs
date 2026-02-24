@@ -104,7 +104,7 @@ if (isset($_GET['fetch'])) {
         
     <div class="input-group">
         <input type="text" id="messageInput" class="form-control" placeholder="Écrivez votre message...">
-        <button class="btn btn-primary" onclick="sendMessage()">Envoyer</button>
+        <button class="btn btn-primary" onclick="sendMessage()">Envoyer le message</button>
     </div>
     
 </div>
