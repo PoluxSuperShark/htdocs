@@ -4,12 +4,21 @@ $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off'
              || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
 // Get hostname
 $host = $_SERVER['HTTP_HOST'];
-// e.g: https://poluxsupershark.net/
 $base_url = $protocol . $host;
 
-// echo $base_url;
-
+// Vérification admin
+$isAdmin = false;
+if (isset($_SESSION['user_id'])) {
+    require_once 'config/database.php'; // ou le chemin correct vers ton PDO
+    $stmt = $pdo->prepare("SELECT role FROM users WHERE id = ?");
+    $stmt->execute([$_SESSION['user_id']]);
+    $user = $stmt->fetch();
+    if ($user && strtolower(trim($user['role'])) === 'admin') {
+        $isAdmin = true;
+    }
+}
 ?>
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="<?php echo $base_url . "/index.php"; ?>">PoluxSuperShark</a>
@@ -33,7 +42,7 @@ $base_url = $protocol . $host;
           </ul>
         </li>
 
-        <!-- Menu avec sous-sous-menu (mega menu simple) -->
+        <!-- Menu avec sous-sous-menu -->
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="megaMenu" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Boutique
@@ -56,9 +65,14 @@ $base_url = $protocol . $host;
         </li>
 
         <li class="nav-item"><a class="nav-link" href="../pages/downloads.php">Rejoindre</a></li>
+
+        <!-- 🔹 Lien admin uniquement si l'utilisateur est admin -->
+        <?php if ($isAdmin): ?>
+        <li class="nav-item"><a class="nav-link text-warning" href="<?php echo $base_url . "/admin.php"; ?>">Admin Panel</a></li>
+        <?php endif; ?>
+
       </ul>
 
-      <!-- Formulaire ou bouton à droite -->
       <form class="d-flex" role="search">
         <input class="form-control me-1" type="search" placeholder="Taper ici pour rechercher">
         <button class="btn btn-outline-success" type="submit">Rechercher</button>

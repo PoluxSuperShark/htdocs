@@ -69,6 +69,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
 </head>
 <body>
 <div class="container mt-5">
+    <?php include('../../components/navbar.php'); ?><br>
     <h1>Modifier l'article</h1>
     <form method="POST">
         <div class="mb-3">

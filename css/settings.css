@@ -1,5 +1,5 @@
-@import "./components/navbar.css";
-@import "./components/footer.css";
+/* BS */
+@import "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css";
 
 main p {
     text-align: justify;

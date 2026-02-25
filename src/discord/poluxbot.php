@@ -51,7 +51,7 @@
 </script>
 
 <p>PoluxBot est un bot Discord qui gère le chat du serveur Minecraft et le projet Minecraft.
-    <br> Il est développé avec soins et amour par <code>PoluxSuperShark</code>, <code>Nelix</code> et <code>Qin0</code>. <br>
+    <br> Il est développé avec soins et amour par <code>PoluxSuperShark</code>, <code>Nelix</code> et <code>Qin</code>. <br>
     Il gère l'intelligence artificielle, la modération, les jeux, le fun etc. <br>
     Constament mis à jour, le bot rend le serveur Discord de <code>PoluxSuperShark</code> vivant et pratique.
 </p>

@@ -52,6 +52,7 @@ $comments = $stmt->fetchAll(PDO::FETCH_ASSOC);
 </head>
 <body>
 <div class="container mt-5">
+    <?php include('../../components/navbar.php'); ?><br>
     <a href="index.php" class="btn btn-secondary mb-3">Retour</a>
     <div class="card mb-3">
         <div class="card-body">

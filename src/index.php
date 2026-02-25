@@ -1,5 +1,5 @@
 <section class="hero text-center text-light d-flex align-items-center" style="
-  background-image: url('https://yt3.googleusercontent.com/PwIvlEO4z_UnotpQdfHLw2ENNDRh3CR4jbEN5x5LmLVxASRbCcnT_3Gk1n8FpOVL2iU5c8p2=w1707-fcrop64=1,00005a57ffffa5a8-k-c0xffffffff-no-nd-rj');
+  background-image: url('../assets/photos/banner.png');
   background-size: cover;
   background-position: center;
   height: 500px;
