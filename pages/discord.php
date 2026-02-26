@@ -1,8 +1,7 @@
 <?php
 session_start();
 
-require '../config/database.php';
-
+require '../config/database.php'; // Décommente si tu as la config DB
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -17,18 +16,35 @@ require '../config/database.php';
 
 <body class="bg-light">
 
-    
     <div class="container mt-5">
-    
-        <?php include "../components/navbar.php"; ?>
+
+        <?php 
+        // Navbar : vérifie si le fichier existe avant de l'inclure
+        $navbarPath = __DIR__ . '/../components/navbar.php';
+        if (file_exists($navbarPath)) {
+            require_once $navbarPath;
+        }
+        ?>
 
         <br>
 
-        <?php include "../src/discord.php"; ?>
+        <?php 
+        // Discord content : vérifie si le fichier existe avant de l'inclure
+        $discordSrcPath = __DIR__ . '/../src/discord.php';
+        if (file_exists($discordSrcPath)) {
+            include $discordSrcPath;
+        }
+        ?>
 
         <br>
         
-        <?php include "../components/footer.php"; ?>
+        <?php 
+        // Footer : vérifie si le fichier existe avant de l'inclure
+        $footerPath = __DIR__ . '/../components/footer.php';
+        if (file_exists($footerPath)) {
+            include $footerPath;
+        }
+        ?>
 
     </div>
 

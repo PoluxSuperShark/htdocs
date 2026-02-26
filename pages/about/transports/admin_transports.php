@@ -129,6 +129,8 @@ $lines = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 <div class="container mt-5">
 
+<?php include "../../../components/navbar.php"; ?><br>
+
 <h2>Gestion des lignes</h2>
 <hr>
 

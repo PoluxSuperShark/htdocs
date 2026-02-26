@@ -1,0 +1,11 @@
+RewriteEngine On
+
+# Redirige /admin vers /admin.php en interne
+RewriteRule ^admin$ admin.php [L]
+
+# Optionnel : rediriger /admin.php vers /admin pour éviter les doublons
+RewriteCond %{THE_REQUEST} /admin\.php
+RewriteRule ^admin\.php$ /admin [R=301,L]
+
+# Errors
+ErrorDocument 404 https://poluxsupershark.net/index.php

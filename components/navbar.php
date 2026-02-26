@@ -9,7 +9,6 @@ $base_url = $protocol . $host;
 // Vérification admin
 $isAdmin = false;
 if (isset($_SESSION['user_id'])) {
-    require_once 'config/database.php'; // ou le chemin correct vers ton PDO
     $stmt = $pdo->prepare("SELECT role FROM users WHERE id = ?");
     $stmt->execute([$_SESSION['user_id']]);
     $user = $stmt->fetch();
@@ -68,15 +67,69 @@ if (isset($_SESSION['user_id'])) {
 
         <!-- 🔹 Lien admin uniquement si l'utilisateur est admin -->
         <?php if ($isAdmin): ?>
-        <li class="nav-item"><a class="nav-link text-warning" href="<?php echo $base_url . "/admin.php"; ?>">Admin Panel</a></li>
+        <li class="nav-item"><a class="nav-link text-danger" href="<?php echo $base_url . "/admin"; ?>">Admin</a></li>
         <?php endif; ?>
 
       </ul>
 
-      <form class="d-flex" role="search">
-        <input class="form-control me-1" type="search" placeholder="Taper ici pour rechercher">
-        <button class="btn btn-outline-success" type="submit">Rechercher</button>
+      <form class="d-flex position-relative" role="search" onsubmit="return false;">
+        <input 
+            class="form-control me-1" 
+            type="search" 
+            id="searchInput"
+            placeholder="Taper ici pour rechercher"
+            autocomplete="off"
+        >
+        <button class="btn btn-outline-success" type="submit">
+            Rechercher
+        </button>
+
+        <div id="searchResults"
+            class="list-group position-absolute w-100 mt-5"
+            style="z-index:999;">
+        </div>
       </form>
     </div>
   </div>
 </nav>
+
+<script>
+const searchData = [
+    { title: "Accueil", url: "/index.php" },
+    { title: "Gouvernement", url: "/gouvernement.php" },
+    { title: "Transports", url: "/transports.php" },
+    { title: "Boutique - Pets", url: "/pets.php" },
+    { title: "Boutique - Cosmétiques", url: "/cosmetiques.php" },
+    { title: "Grades", url: "/grades.php" },
+    { title: "Téléchargements", url: "/pages/downloads.php" }
+];
+
+const input = document.getElementById("searchInput");
+const resultsBox = document.getElementById("searchResults");
+
+input.addEventListener("keyup", function () {
+    const query = this.value.toLowerCase();
+    resultsBox.innerHTML = "";
+
+    if (query.length < 2) return;
+
+    const filtered = searchData.filter(item =>
+        item.title.toLowerCase().includes(query)
+    );
+
+    filtered.slice(0, 5).forEach(item => {
+        const link = document.createElement("a");
+        link.href = item.url;
+        link.className = "list-group-item list-group-item-action";
+        link.textContent = item.title;
+        resultsBox.appendChild(link);
+    });
+});
+
+// Fermer si on clique ailleurs
+document.addEventListener("click", function(e) {
+    if (!input.contains(e.target)) {
+        resultsBox.innerHTML = "";
+    }
+});
+</script>
